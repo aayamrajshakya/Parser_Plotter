@@ -4,7 +4,7 @@ import numpy as np
 import os
 
 # Read the CSV file
-df = pd.read_csv('oot.csv')
+df = pd.read_csv('10.csv')
 
 # Extract the time from the Interval column
 df['Time'] = df['Interval'].apply(lambda x: float(x.split('-')[1]))
@@ -36,12 +36,12 @@ ax2.tick_params(axis='y', labelcolor=color)
 ax2.set_ylim(0, max(max(df['Loss']), 1) * 1.1)  # Set max to 110% of max loss or 1.1, whichever is greater
 
 # Set the title
-plt.title('Stable @ 115Mb/s')
+plt.title('Stable @ 10Mb/s')
 
-# Add a legend
+# Add a legend outside the plot at the extreme right bottom with some distance from the right y-axis
 lines = bandwidth_line + loss_line
 labels = [l.get_label() for l in lines]
-ax1.legend(lines, labels, loc='upper left')
+ax1.legend(lines, labels, loc='lower left', bbox_to_anchor=(1.05, 0), borderaxespad=0)
 
 # Set x-axis to show only 0 and increments of 50 seconds
 max_time = max(df['Time'])
@@ -50,12 +50,13 @@ x_ticks = np.arange(0, max_time + 1, 100)
 ax1.set_xticks(x_ticks)
 ax1.set_xticklabels([int(x) for x in x_ticks])
 
-# Adjust the layout
+# Adjust the layout to make room for the legend
 plt.tight_layout()
+plt.subplots_adjust(right=0.85)  # Adjust this value to fine-tune legend position
 
 # Save the figure
 downloads_path = os.path.expanduser("~/Downloads")
-file_path = os.path.join(downloads_path, "iperf_performance_plot.png")
+file_path = os.path.join(downloads_path, "stable(10).png")
 plt.savefig(file_path, dpi=300, bbox_inches='tight')
 
 # Display the plot (optional)
